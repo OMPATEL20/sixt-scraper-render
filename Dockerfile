@@ -1,23 +1,22 @@
-# Use a newer Python base image
 FROM python:3.11-slim
 
-# Install Playwright dependencies
+WORKDIR /app
+
+# Install only essential system packages
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Playwright and browsers
-RUN pip install playwright==1.40.0
-RUN playwright install chromium
-RUN playwright install-deps
-
-# Set working directory
-WORKDIR /app
-
-# Copy requirements and install Python packages
+# Copy requirements first
 COPY requirements.txt .
+
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Playwright and Chromium (without install-deps)
+RUN pip install playwright && \
+    playwright install chromium
 
 # Copy the rest of the application
 COPY . .
