@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+scrapers/outputs/*.csv
+scrapers/outputs/*.json
+scrapers/debug/*.png
+scrapers/debug/*.txt
+.DS_Store
