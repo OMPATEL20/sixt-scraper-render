@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: sixt-scraper
+    runtime: docker
+    repo: https://github.com/YOUR_USERNAME/sixt-scraper # Replace with your repo
+    plan: free
+    envVars:
+      - key: OLLAMA_URL
+        value: http://localhost:11434
+      - key: HEADLESS_MODE
+        value: "true"
+      - key: RENDER
+        value: "true"
