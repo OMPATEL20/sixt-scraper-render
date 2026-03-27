@@ -1,5 +1,16 @@
-# Use Playwright's official Python image
-FROM mcr.microsoft.com/playwright/python:v1.40.0-focal
+# Use a newer Python base image
+FROM python:3.11-slim
+
+# Install Playwright dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Playwright and browsers
+RUN pip install playwright==1.40.0
+RUN playwright install chromium
+RUN playwright install-deps
 
 # Set working directory
 WORKDIR /app
