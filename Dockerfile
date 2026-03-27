@@ -1,23 +1,12 @@
-FROM python:3.11-slim
-
-# Install minimal dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Use Playwright's official Python image
+FROM mcr.microsoft.com/playwright/python:v1.40.0-focal
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first (for better caching)
+# Copy requirements and install Python packages
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Install Playwright and its dependencies
-RUN pip install playwright
-RUN playwright install chromium
-RUN playwright install-deps
 
 # Copy the rest of the application
 COPY . .
