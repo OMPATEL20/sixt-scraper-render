@@ -2,23 +2,23 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install only essential system packages
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first
+# Install numpy and pandas first to avoid binary incompatibility
 COPY requirements.txt .
-
-# Install Python packages
+RUN pip install --no-cache-dir numpy==1.24.3
+RUN pip install --no-cache-dir pandas==2.0.3
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright and Chromium (without install-deps)
-RUN pip install playwright && \
-    playwright install chromium
+# Install Playwright and Chromium
+RUN pip install playwright==1.40.0
+RUN playwright install chromium
 
-# Copy the rest of the application
+# Copy application
 COPY . .
 
 # Create necessary directories
